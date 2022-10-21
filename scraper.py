@@ -63,7 +63,7 @@ class ScraperLekarzy:
 
      driver = webdriver.Remote(
         command_executor='http://%s:%s/wd/hub' % (selenium_conf["host"], selenium_conf["port"]),    
-         desired_capabilities=DesiredCapabilities.FIREFOX)
+         desired_capabilities=DesiredCapabilities.CHROME)
      driver.get(self.adresStartowy)
      return driver
      
@@ -80,12 +80,12 @@ class ScraperLekarzy:
     # TODO te dwie metody trzeba by obiektowo zrobic, wydzielic klase - Zapisywacz albo Pamiec
     def sprawdzCzyJuzSpotkalismy(self, co):
         md5 = hashlib.md5()
-        md5.update(co)
+        md5.update(co.encode('utf-8'))
         skrot = 'pamiec/%s' % (md5.hexdigest())
         print "Skrót wyszedł: "+ skrot
         ret = os.path.exists(skrot) 
         plik = open(skrot, 'w')
-        plik.write(co)
+        plik.write(co.encode('utf-8'))
         plik.close()
         return ret
 
@@ -125,17 +125,17 @@ class ScraperLekarzy:
        poprzedniDzien=""
        for wiersz in tabelka:
           if wiersz[0] != poprzedniDzien:
-             tekst= tekst + "</ul><h4>%s</h4><ul>" % wiersz[0].strftime("%A, %Y-%m-%d")
-          reprezentacja = self.pozbadzSiePolskichLiter("%s" % (", ".join(wiersz[1:])))
-          style=""
+             tekst= tekst + u"</ul><h4>%s</h4><ul>" % wiersz[0].strftime("%A, %Y-%m-%d").decode('utf-8')
+          reprezentacja = u"%s" % (", ".join(wiersz[1:]))
+          style=u""
           if not self.sprawdzCzyJuzSpotkalismy("%s" % wiersz[0]+reprezentacja):
-            style=" style='color: green'"
-          tekst=tekst + "<li%s>%s</li>" % (style, reprezentacja)
+            style=u" style='color: green'"
+          tekst=tekst + u"<li%s>%s</li>" % (style, reprezentacja)
           poprzedniDzien = wiersz[0]
        
-       tekst=tekst+"</ul><br/><br/>"
+       tekst=tekst+u"</ul><br/><br/>"
        
-       tekst = tekst + ("<br/>\r-- " +"<br/>\r %s")   % datetime.datetime.now().__str__()
+       tekst = tekst + (u"<br/>\r-- " +"<br/>\r %s")   % datetime.datetime.now().__str__()
        
        
        temat="[%s] %s" % (self.naglowekWMejlu, datetime.datetime.now())

@@ -14,3 +14,5 @@ pamiec/c*
 pamiec/d*
 pamiec/e*
 pamiec/f*
+.idea
+*.pyc

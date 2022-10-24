@@ -17,7 +17,7 @@ slownik = {
      'port' : '4444',
      #'browser' : '*firefox /usr/bin/firefox'
 },    
-    
+'sleep_time_in_seconds' : 3600
 }
 
 """Mapa: login -> ustawienia, schemat ustawień identyczny jak dla `slownik`"""

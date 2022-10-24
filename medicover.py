@@ -112,6 +112,14 @@ class ScraperMedicover(ScraperLekarzy):
 
 
 if __name__ == "__main__":
-  ScraperMedicover(sys.argv).scrapuj()
-  
+  while True:
+    print "[%s] Will try to get visits" % datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    try:
+      ScraperMedicover(sys.argv).scrapuj()
+    except Exception as e:
+      print traceback.format_exc()
+
+    sleep_time_in_seconds = slownik['sleep_time_in_seconds']
+    print "Sleeping for %s seconds..." % sleep_time_in_seconds
+    time.sleep(sleep_time_in_seconds)

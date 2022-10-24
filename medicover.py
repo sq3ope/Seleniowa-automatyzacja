@@ -44,7 +44,7 @@ class ScraperMedicover(ScraperLekarzy):
     sel.get("https://mol.medicover.pl/MyVisits?bookingTypeId=2&specializationId=83&selectedSpecialties=83&pfm=1")
 
     self.czekajAzSiePojawi(sel, (By.XPATH, "//button[text()='Szukaj']"))
-    print "Find button found"
+    print "Find button found, clicking..."
     
 #     time.sleep(2)
 #
@@ -64,7 +64,11 @@ class ScraperMedicover(ScraperLekarzy):
     time.sleep(6)
 
     sel.find_element_by_xpath("//button[text()='Szukaj']").click()
-    self.czekajAzSiePojawi(sel, (By.CSS_SELECTOR, '.visitListDate'))
+
+    element = self.czekajAzSiePojawi(sel, (By.CSS_SELECTOR, '.visitListDate, #phoneImg'))
+    if (element.get_attribute("id") == "phoneImg"):
+      print "No visits found."
+      return []
 
     print "Got some visits"
 
